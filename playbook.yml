@@ -1,0 +1,22 @@
+# Install the latest release, including PostgreSQL on the same server
+- hosts: localhost
+  roles:
+
+  - role: ome.postgresql
+    postgresql_version: "11"
+    postgresql_databases:
+      - name: omero
+    postgresql_users:
+      - user: omero
+        password: omero
+        databases: [omero]
+
+  - role: ome.omero_server
+  - role: ome.omero_web
+    omero_web_config_set:
+        omero.web.server_list:
+          - [34.163.84.124, 4064, omero-example]
+        omero.web.public.enabled: True
+        omero.web.public.server_id: 1
+        omero.web.public.user: public
+        omero.web.public.password: secret-password
